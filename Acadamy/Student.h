@@ -37,7 +37,8 @@ public:
 
 	//Constructor and Destructor
 	Student(human_parameters, student_parameters);
+	virtual ~Student();
 	//Methods
-	void info()const;
+	virtual void info()const;
 
 };
