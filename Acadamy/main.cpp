@@ -59,9 +59,16 @@ public:
 	{
 		cout << last_name << " " << first_name << " " << age << " years\n";
 	}
-
+	virtual std::ostream& print(std::ostream& os)const
+	{
+		return os << last_name << " " << first_name << " " << age;
+	}
 };
 
+std::ostream& operator<< (std::ostream& os, const Human& obj)
+{
+	return obj.print(os);
+}
 
 ////							define для студента								   ////
 ////-------------------------------------------------------------------------------////
@@ -143,7 +150,10 @@ public:
 		Human::info();
 		cout << specialty << " " << group << " " << year << " " << rating << " " << attendance << endl;
 	}
-
+	std::ostream& print(std::ostream& os)const
+	{
+		return Human::print(os) << " " << specialty << " " << group << " " << year << " " << rating << " " << attendance;
+	}
 };
 
 
@@ -194,12 +204,12 @@ public:
 		Human::info();
 		cout << specialty << " " << experience << endl;
 	}
-
-
-
-
-
+	std::ostream& print(std::ostream& os)const
+	{
+		return Human::print(os) << " " << specialty << " " << experience;
+	}
 };
+
 
 
 ////-------------------------------------------------------------------------------////
@@ -221,7 +231,7 @@ public:
 	}
 	//Constructor and Destructor
 	Graduete(human_parameters, student_parameters, const std::string& subject)
-		:Student(human_arguments,student_arguments)
+		:Student(human_arguments, student_arguments)
 	{
 		set_subject(subject);
 		cout << "GConstructor:\t" << this << endl;
@@ -233,9 +243,10 @@ public:
 		Student::info();
 		cout << subject << endl;
 	}
-
-
-
+	std::ostream& print(std::ostream& os)const
+	{
+		return Student::print(os) << " " << subject;
+	}
 };
 
 
@@ -271,7 +282,7 @@ void main()
 
 	for (int i = 0; i < (sizeof(group) / sizeof(group[0])); i++)
 	{
-		group[i]->info();
+		cout << *group[i] << endl;
 	}
 	for (int i = 0; i < (sizeof(group) / sizeof(group[0])); i++)
 	{
