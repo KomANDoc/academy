@@ -62,6 +62,10 @@ public:
 
 };
 
+std::ostream& operator<<(std::ostream& os, const Human& obj)
+{
+	return os << obj.get_last_name() << " " << obj.get_first_name() << " " << obj.get_age() << " ";
+}
 
 ////							define для студента								   ////
 ////-------------------------------------------------------------------------------////
@@ -146,6 +150,16 @@ public:
 
 };
 
+std::ostream& operator<<(std::ostream& os, const Student& obj)
+{
+	return os << (Human&)obj << " "
+		<< obj.get_specialty() << " "
+		<< obj.get_group() << " "
+		<< obj.get_year() << " "
+		<< obj.get_rating() << " "
+		<< obj.get_attendance() << " ";
+}
+
 
 ////							define для учителя								   ////
 ////-------------------------------------------------------------------------------////
@@ -194,13 +208,14 @@ public:
 		Human::info();
 		cout << specialty << " " << experience << endl;
 	}
-
-
-
-
-
 };
 
+	std::ostream& operator<<(std::ostream& os, const Teacher& obj)
+	{
+		return os << (Human&)obj << " "
+			<< obj.get_specialty() << " "
+			<< obj.get_experience() << " ";
+	}
 
 ////-------------------------------------------------------------------------------////
 
@@ -234,9 +249,13 @@ public:
 		cout << subject << endl;
 	}
 
-
-
 };
+
+std::ostream& operator<<(std::ostream& os, const Graduete& obj)
+{
+	return os << (Student&)obj << " "
+		<< obj.get_subject() << " ";
+}
 
 
 ////-------------------------------------------------------------------------------////
@@ -258,6 +277,7 @@ void main()
 
 	Graduete Jess("Pinkman", "Jessie", 25, "Chemistry", "SPU_110", 1, 70, 90, "Chemistry");
 	Jess.info();
+
 #endif 
 
 
@@ -266,17 +286,20 @@ void main()
 		//Upcast - преобразование по базовому типу:
 		new Student("Pinkman", "Jessie", 25, "Chemistry", "SPU_110", 1, 70, 90),
 		new Teacher("Rombova", "Margarita", 56, "Chemistry", 15),
-		new Graduete("Pinkman", "Jessie", 25, "Chemistry", "SPU_110", 1, 70, 90, "Chemistry")
+		new Graduete("Pinkman", "Hank", 29, "Chemistry", "SPU_110", 3, 90, 90, "Chemistry")
 	};
-
+	cout << "\n/=========================================================/\n" << endl;
 	for (int i = 0; i < (sizeof(group) / sizeof(group[0])); i++)
 	{
-		group[i]->info();
+		cout << typeid (*group[i]).name() << endl;
+		if (typeid(*group[i]) == typeid(Student))cout << *dynamic_cast<Student*>(group[i]) << endl;
+		if (typeid(*group[i]) == typeid(Teacher))cout << *dynamic_cast<Teacher*>(group[i]) << endl;
+		if (typeid(*group[i]) == typeid(Graduete))cout << *dynamic_cast<Graduete*>(group[i]) << endl;
+		cout << "\n/=========================================================/\n" << endl;
 	}
 	for (int i = 0; i < (sizeof(group) / sizeof(group[0])); i++)
 	{
 		delete group[i];
 	}
-
 
 }
