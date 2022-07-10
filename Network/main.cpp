@@ -2,7 +2,6 @@
 #include <iostream>
 #include <fstream>
 using namespace std;
-
 //#define First_hw
 #define Second_hw
 
@@ -63,7 +62,6 @@ void main()
 			fout << ";\n\tfixed-address\t\t" << buffer
 				<< ";\n}\n" << endl;
 			i++;
-			//остаётся проблема 13 хоста которого нет)
 		}
 	}
 	else
