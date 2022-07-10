@@ -3,18 +3,18 @@
 #include <fstream>
 using namespace std;
 
-//#define WRITE_IN_FILE
+#define WRITE_IN_FILE
 //#define WRITE_WITH_FILE 
+//#define OPEN_FILE
 void main ()
 {
-
 	setlocale(LC_ALL, "RU");
 
 #ifdef WRITE_IN_FILE
 	cout << "Hello Files" << endl;
 	std::ofstream fout;		//1) создаем поток
 	fout.open("File.txt");	//2) Открываем поток
-	fout << "Hello Files, Я Андрей ";	//3) Используев поток
+	fout << "Hello File";//3) Используев поток
 	fout.close();			//4) После использования потока, его обязательно нужно закрыть
 	/*fout.open("File.txt", std::ios_base::app);//позволяет дописать файл файлы не очищая его
 	fout << "Hello Files, Я Андрей ";
@@ -45,6 +45,7 @@ void main ()
 	system("start notepad File.txt");//start чтобы консоль не зависила от открытого файла, создаёт новый процесс   
 #endif 
 
+#ifdef OPEN_FILE
 	char sz_filename[FILENAME_MAX] = {};
 	cout << "Введите имя файла: "; cin.getline(sz_filename, FILENAME_MAX);
 	if (strstr(sz_filename, ".txt") == NULL)
@@ -77,5 +78,5 @@ void main ()
 	char sz_comand[FILENAME_MAX] = "start notepad ";
 	strcat(sz_comand, sz_filename);//Слияние файла и команды
 	system(sz_comand);
-
+#endif
 }
