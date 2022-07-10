@@ -2,8 +2,8 @@
 #include <iostream>
 #include <fstream>
 using namespace std;
-//#define First_hw
-#define Second_hw
+#define First_hw
+//#define Second_hw
 
 void main()
 {
@@ -26,7 +26,7 @@ void main()
 		{
 			fin >> ip;
 			fin >> mac;
-			fout << mac << "\t" << ip << endl;
+			fout << mac << "\t" << ip;
 		}
 	}
 	else
@@ -34,6 +34,7 @@ void main()
 		std::cerr << "Error: file not found" << endl;
 	}
 
+	fin.close();
 	fout.close();
 	system("start notepad 201 RAW.txt");
 	system("start notepad File.txt");

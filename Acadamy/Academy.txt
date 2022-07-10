@@ -1,0 +1,4 @@
+class Student:    Pinkman        Jessie      25   Chemistry                SPU_110 1  70      90      
+class Teacher:    Rombova        Margarita   56   Chemistry                15   
+class Graduete:   Pinkman        Jessie      25   Chemistry                SPU_110 1  70      90      Chemistry it's my life   
+class Teacher:    Diaz           Richard     50   Weapon distribution      20   

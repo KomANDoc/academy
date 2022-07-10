@@ -1,9 +1,23 @@
 #include <iostream>
+#include <fstream>
 #include <string>//это не обязательно. ибо в новой студие она сама подключает эту библиотеку 
 using namespace std;
 
+enum Defaults//enum - перечисление. набор целочисленных констант 
+{
+	type_width = 18,
+	last_name_width = 15,
+	first_name_width = 12,
+	age_width = 5,
+	specialty_width = 25,
+	group_width = 8,
+	year_width = 3,
+	rating_width = 8,
+	attendance_width = 8,
+	experience_width = 5,
+	subject_width = 25,
+};
 
-//#define Inheritance_Check
 
 
 ////							define для человека								   ////
@@ -54,14 +68,40 @@ public:
 		cout << "HConstructor:\t" << this << endl;
 	}
 	virtual ~Human() { cout << "HDestructor:\t" << this << endl; }
-	
+
 	virtual void info()const
 	{
 		cout << last_name << " " << first_name << " " << age << " years\n";
 	}
 	virtual std::ostream& print(std::ostream& os)const
 	{
-		return os << last_name << " " << first_name << " " << age;
+		//return os << last_name << " " << first_name << " " << age;
+		os.width(Defaults::last_name_width);
+		os << std::left;
+		os << last_name;
+		os.width(Defaults::first_name_width);
+		os << first_name;
+		os.width(Defaults::age_width);
+		os << age;
+		return os;
+	}
+	virtual std::ofstream& print(std::ofstream& ofs)const
+	{
+		ofs.width(Defaults::type_width);
+		ofs << std::left;
+		ofs << std::string(typeid(*this).name()) + ":";
+		ofs.width(Defaults::last_name_width);
+		ofs << last_name;
+		ofs.width(Defaults::first_name_width);
+		ofs << first_name;
+		ofs.width(Defaults::age_width);
+		ofs << age;
+		return ofs;
+	}
+	virtual std::ifstream& scan(std::ifstream& ifs)
+	{
+		ifs >> last_name >> first_name >> age;
+		return ifs;
 	}
 };
 
@@ -69,6 +109,16 @@ std::ostream& operator<< (std::ostream& os, const Human& obj)
 {
 	return obj.print(os);
 }
+std::ofstream& operator<< (std::ofstream& ofs, const Human& obj)
+{
+	obj.print(ofs);
+	return ofs;
+}
+std::ifstream& operator>>(std::ifstream& ifs, Human& obj)
+	{
+		obj.scan(ifs);
+		return ifs;
+	}
 
 ////							define для студента								   ////
 ////-------------------------------------------------------------------------------////
@@ -152,7 +202,50 @@ public:
 	}
 	std::ostream& print(std::ostream& os)const
 	{
-		return Human::print(os) << " " << specialty << " " << group << " " << year << " " << rating << " " << attendance;
+		/*return Human::print(os) << " " << specialty << " " << group << " " << year << " " << rating << " " << attendance;*/
+		Human::print(os);
+		os.width(Defaults::specialty_width);
+		os << specialty;
+		os.width(Defaults::group_width);
+		os << group;
+		os.width(Defaults::year_width);
+		os << year;
+		os.width(Defaults::rating_width);
+		os << rating;
+		os.width(Defaults::attendance_width);
+		os << attendance;
+		return os;
+	}
+	std::ofstream& print(std::ofstream& ofs)const
+	{
+		Human::print(ofs);
+		ofs.width(Defaults::specialty_width);
+		ofs << specialty;
+		ofs.width(Defaults::group_width);
+		ofs << group;
+		ofs.width(Defaults::year_width);
+		ofs << year;
+		ofs.width(Defaults::rating_width);
+		ofs << rating;
+		ofs.width(Defaults::attendance_width);
+		ofs << attendance;
+		return ofs;
+	}
+	std::ifstream& scan(std::ifstream& ifs)
+	{
+		Human::scan(ifs);
+		char specialty[Defaults::specialty_width] = {};
+		ifs.read(specialty, Defaults::specialty_width);
+		for (int i = Defaults::specialty_width - 1; specialty[i] == ' '; i--)
+		{
+			specialty[i] = 0;
+		}
+		this->specialty = specialty;
+		ifs >> group;
+		ifs >> year;
+		ifs >> rating;
+		ifs >> attendance;
+		return ifs;
 	}
 };
 
@@ -161,7 +254,7 @@ public:
 ////-------------------------------------------------------------------------------////
 
 #define teacher_parameters const std::string& specialty, unsigned int experience 
-#define teacher_arguments cspecialty, experience 
+#define teacher_arguments specialty, experience 
 
 ////-------------------------------------------------------------------------------////
 
@@ -206,10 +299,38 @@ public:
 	}
 	std::ostream& print(std::ostream& os)const
 	{
-		return Human::print(os) << " " << specialty << " " << experience;
+		//return Human::print(os) << " " << specialty << " " << experience;
+		Human::print(os);
+		os.width(Defaults::specialty_width);
+		os << specialty;
+		os.width(Defaults::experience_width);
+		os << experience;
+		return os;
+	}
+	std::ofstream& print(std::ofstream& ofs)const
+	{
+		//return Human::print(os) << " " << specialty << " " << experience;
+		Human::print(ofs);
+		ofs.width(Defaults::specialty_width);
+		ofs << specialty;
+		ofs.width(Defaults::experience_width);
+		ofs << experience;
+		return ofs;
+	}
+	std::ifstream& scan(std::ifstream& ifs)
+	{
+		Human::scan(ifs);
+		char specialty[Defaults::specialty_width] = {};
+		ifs.read(specialty, Defaults::specialty_width);
+		for (int i = Defaults::specialty_width - 1; specialty[i] == ' '; i--)
+		{
+			specialty[i] = 0;
+		}
+		this->specialty = specialty;
+		ifs >> experience;
+		return ifs;
 	}
 };
-
 
 
 ////-------------------------------------------------------------------------------////
@@ -245,13 +366,79 @@ public:
 	}
 	std::ostream& print(std::ostream& os)const
 	{
-		return Student::print(os) << " " << subject;
+		//return Student::print(os) << " " << subject;
+		Student::print(os);
+		os.width(Defaults::subject_width);
+		os << subject;
+		return os;
+	}
+	std::ofstream& print(std::ofstream& ofs)const
+	{
+		//return Student::print(os) << " " << subject;
+		Student::print(ofs);
+		ofs.width(Defaults::subject_width);
+		ofs << subject;
+		return ofs;
+	}
+	std::ifstream& scan(std::ifstream& ifs)
+	{
+		Student::scan(ifs);
+		std::getline(ifs, subject);
+		return ifs;
 	}
 };
+Human* HumanFactory(const std::string type)
+{
+	if (type.find("class Teacher") != std::string::npos)
+		return new Teacher("", "", 0, "", 0);
+	if (type.find("class Graduete") != std::string::npos)
+		return new Graduete("", "", 0, "", "", 0, 0, 0, "");
+	if (type.find("class Student") != std::string::npos)
+		return new Student("", "", 0, "", "", 0, 0, 0);
+	return nullptr;
+}
+
+Human** load(const char filename[], int& n)
+{
+	Human** group = nullptr;
+	std::ifstream fin(filename);
+	if (fin.is_open())
+	{
+		std::string buffer;
+		n = 0;
+		//1) Вычисляем размер массива
+		for(; !fin.eof();n++)std::getline(fin, buffer);
+		//2) Выделяем память под массив
+		group = new Human*[n]{};
+		//3)Возращаемся к началу файла, для того чтобы прочитать его содержимое 
+		std::cout << fin.tellg() << endl;
+		fin.clear();
+		fin.seekg(0);
+		std::cout << fin.tellg() << endl;
+
+		//4) Считываем объекты из файла в массив
+		for (int i = 0; i < n; i++)
+		{
+			std::getline(fin, buffer, ':');
+			group[i] = HumanFactory(buffer);
+			if(group[i]) fin >> *group[i];
+		}
+		fin.close();
+	}
+	else
+	{
+		std::cerr << "Error: file not found" << endl;
+	}
+ 	return group;
+}
+
 
 
 ////-------------------------------------------------------------------------------////
 
+//#define Inheritance_Check
+//#define Polimorphism_Check
+#define FILE_READ_CHECK
 
 void main()
 {
@@ -271,23 +458,45 @@ void main()
 	Jess.info();
 #endif 
 
-
+#ifdef Polimorphism_Check
 	Human* group[] =
 	{
 		//Upcast - преобразование по базовому типу:
 		new Student("Pinkman", "Jessie", 25, "Chemistry", "SPU_110", 1, 70, 90),
 		new Teacher("Rombova", "Margarita", 56, "Chemistry", 15),
-		new Graduete("Pinkman", "Jessie", 25, "Chemistry", "SPU_110", 1, 70, 90, "Chemistry")
+		new Graduete("Pinkman", "Jessie", 25, "Chemistry", "SPU_110", 1, 70, 90, "Chemistry it's my life"),
+		new Teacher("Diaz", "Richard",50, "Weapon distribution", 20)
 	};
+
+	std::ofstream fout("Academy.txt");
 
 	for (int i = 0; i < (sizeof(group) / sizeof(group[0])); i++)
 	{
 		cout << *group[i] << endl;
+		fout << *group[i] << endl;
 	}
+	fout.close();
 	for (int i = 0; i < (sizeof(group) / sizeof(group[0])); i++)
 	{
 		delete group[i];
 	}
+
+	system("start notepad Academy.txt");
+#endif 
+
+#ifdef FILE_READ_CHECK
+	int n = 0;
+	Human** group = load("Academy.txt", n);
+	for (int i = 0; i < n; i++)
+	{
+		cout << *group[i] << endl;
+	}
+	for (int i = 0; i < n; i++)
+	{
+		delete group[i];
+	}
+	delete[] group;
+#endif // FILE_READ_CHECK
 
 
 }
