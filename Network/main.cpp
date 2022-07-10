@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS //Чтобы не жаловалось на рисковую команду strcat(...)
+п»ї#define _CRT_SECURE_NO_WARNINGS //Р§С‚РѕР±С‹ РЅРµ Р¶Р°Р»РѕРІР°Р»РѕСЃСЊ РЅР° СЂРёСЃРєРѕРІСѓСЋ РєРѕРјР°РЅРґСѓ strcat(...)
 #include <iostream>
 #include <fstream>
 using namespace std;
@@ -63,7 +63,7 @@ void main()
 			fout << ";\n\tfixed-address\t\t" << buffer
 				<< ";\n}\n" << endl;
 			i++;
-			//остаётся проблема 13 хоста которого нет)
+			//РѕСЃС‚Р°С‘С‚СЃСЏ РїСЂРѕР±Р»РµРјР° 13 С…РѕСЃС‚Р° РєРѕС‚РѕСЂРѕРіРѕ РЅРµС‚)
 		}
 	}
 	else
