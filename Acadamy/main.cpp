@@ -408,6 +408,7 @@ Human** load(const char filename[], int& n)
 		n = 0;
 		//1) Вычисляем размер массива
 		for(; !fin.eof();n++)std::getline(fin, buffer);
+		n--;
 		//2) Выделяем память под массив
 		group = new Human*[n]{};
 		//3)Возращаемся к началу файла, для того чтобы прочитать его содержимое 
